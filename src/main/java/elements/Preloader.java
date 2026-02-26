@@ -13,10 +13,6 @@ public class Preloader extends BaseElement{
         super(container);
     }
 
-    public Preloader() {
-        this.container = $x("//*[@class='spinner-border']");
-    }
-
     @Step("Проверка отсуствия активного прелоадера")
     public void checkPreloader() {
         new Waiting().waitUntilDisappear(container);

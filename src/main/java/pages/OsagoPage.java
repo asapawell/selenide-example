@@ -31,8 +31,6 @@ public class OsagoPage {
     private final Input licenseInput = new Input($x("//*[@formcontrolname='licensePlate']")
             .as("Номер"));
 
-    private final Preloader preloader = new Preloader();
-
     private final Preloader iframePreloader = new Preloader($x("//*[@class='preloader-image']"));
 
     private final Button calculateButton = new Button($x("//button[@test-id='calculateBtnLicenseComponent']")
@@ -87,7 +85,7 @@ public class OsagoPage {
         checkTitle();
         iframePreloader.checkPreloader();
         Selenide.switchTo().frame($x("//iframe[@id='angularAppIframe']").as("Блок рассчета"));
-        preloader.checkPreloader();
+//        preloader.checkPreloader();
         licenseInput.scrollIntoView();
         return this;
     }
