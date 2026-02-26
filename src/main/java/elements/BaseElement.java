@@ -21,18 +21,11 @@ public abstract class BaseElement {
                 : container.getSearchCriteria();
     }
 
-    public BaseElement() {}
-
-    public void shouldBe(WebElementCondition condition) {
-        container.shouldBe(condition);
+    public BaseElement() {
     }
 
-    public void scrollIntoView(){
+    public void scrollIntoView() {
         container.scrollIntoView(ScrollIntoViewOptions.instant().block(center));
-    }
-
-    public void click() {
-        container.click();
     }
 
 }

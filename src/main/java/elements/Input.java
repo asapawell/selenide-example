@@ -21,7 +21,7 @@ public class Input extends BaseElement {
 
     @Step("Установить значение '{value}' в поле '{this.alias}'")
     public void setData(String value) {
-        input.click();
+        click();
         input.setValue(value);
     }
 
@@ -50,6 +50,7 @@ public class Input extends BaseElement {
         input.shouldBe(disabled);
     }
 
+    @Step("Нажать в поле ввода '{this.alias}'")
     public void click() {
         input.click();
     }

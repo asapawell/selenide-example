@@ -7,13 +7,13 @@ import elements.CheckBox;
 import elements.DropDownList;
 import elements.Input;
 import elements.Preloader;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
 import pages.components.SideMenu;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -21,7 +21,6 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.switchTo;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @Slf4j
 public class OsagoPage {
@@ -79,9 +78,8 @@ public class OsagoPage {
 
 
     @Step("Проверить заголовок страницы")
-    public OsagoPage checkTitle() {
+    public void checkTitle() {
         osagoTitle.shouldBe(visible);
-        return this;
     }
 
     @Step("Проскролить до видимости поля номера автомобиля")
@@ -146,17 +144,11 @@ public class OsagoPage {
         return this;
     }
 
-    @Step("Выбрать год выпуска")
-    public OsagoPage chooseHorsePower() {
-        horsePower.selectFirst();
-        return this;
-    }
-
     @Step("Ввести серию и номер СТС, воспользовавшись подсказкой")
     public OsagoPage inputStsNumberControl(String value) {
         stsNumberControlInput.clickTooltip();
         popOver.shouldBe(visible);
-//        checkPopOver();
+        makeScreenshot();
         stsNumberControlInput.setData(value);
         return this;
     }
@@ -199,31 +191,17 @@ public class OsagoPage {
         return new SideMenu();
     }
 
-    public void checkPopOver() {
+    public void makeScreenshot() {
         SelenideElement img = $("popover-container img")
                 .shouldBe(visible);
         File actualImg = img.screenshot();
-        BufferedImage expected = null;
-        BufferedImage actual = null;
-
         try {
-            expected = ImageIO.read(new File("src/test/resources/licenseSts.png"));
             if (actualImg != null) {
-                actual = ImageIO.read(actualImg);
+                Allure.addAttachment("Снимок", new FileInputStream(actualImg));
             }
         } catch (IOException ex) {
-            log.error(ex.getMessage());
+            log.warn("attachScreenshotToAllure(): FAILED\n{}", ex.getMessage());
         }
-        BufferedImage finalExpected = expected;
-        BufferedImage finalActual = actual;
-        assertSoftly(softly -> {
-            softly.assertThat(finalExpected.getWidth()).isEqualTo(finalActual.getWidth());
-            softly.assertThat(finalExpected.getHeight()).isEqualTo(finalActual.getHeight());
-            for (int x = 0; x < finalExpected.getWidth(); x++) {
-                for (int y = 0; y < finalExpected.getHeight(); y++) {
-                    softly.assertThat(finalExpected.getRGB(x, y)).isEqualTo(finalActual.getRGB(x, y));
-                }
-            }
-        });
+
     }
 }

@@ -43,13 +43,6 @@ public class DropDownList extends BaseElement {
         firstOption.as(firstOption.getText().trim()).click();
     }
 
-    @Step("Ввести значение [{valueText}] в фильтр '{this.alias}'")
-    public void inputValue(String valueText) {
-        input.click();
-        input.setData(valueText);
-        options.shouldHave(sizeGreaterThan(0));
-    }
-
     @Step("Выбрать значение [{optionText}] в выпадающем списке '{this.alias}'")
     public void selectExactChoose(String optionText) {
         options.filter(Condition.exactText(optionText)).first().as(optionText).click();
@@ -68,12 +61,6 @@ public class DropDownList extends BaseElement {
         input.checkValue(optionText);
     }
 
-    @Step("Открыть выпадающий список '{this.alias}', ввести и выбрать значение [{optionText}]")
-    public void openDdlInputAndChooseExactOption(String optionText) {
-        openDdl();
-        input.setData(optionText);
-        selectExactChoose(optionText);
-    }
 
     @Step("Ввести частичное значение '{partValue}' в выпадающий список '{this.alias}' и выбрать полное '{fullValue}'")
     public void setPartialValueInDdlInput(String partValue, String fullValue) {
