@@ -1,12 +1,13 @@
 package tests;
 
-import basetest.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestTemplate;
 import pages.MainPage;
 import service.Env;
 
-public class OsagoTest extends BaseTest {
+import static com.codeborne.selenide.Selenide.open;
+
+public class OsagoTest {
 
     private final MainPage mainPage = new MainPage();
 
@@ -21,6 +22,7 @@ public class OsagoTest extends BaseTest {
     @TestTemplate
     @DisplayName("Рассчитать стоимость ОСАГО")
     public void calculateOsagoTest() {
+        open("/");
         mainPage
                 .chooseAutoCategory()
                 .checkOsagoCard()

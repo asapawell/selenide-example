@@ -33,7 +33,9 @@ public class AllureSelenideListener implements LogEventListener {
         lifecycle.startStep(uuid, new StepResult().setName(logEvent.toString()).setStatus(Status.PASSED));
 
         if (logEvent.getStatus().equals(LogEvent.EventStatus.FAIL)) {
-            if (logEvent.getError().getCause() != null && logEvent.getError().getCause().getMessage().contains("unexpected alert open")) {
+            Throwable error = logEvent.getError();
+            if (error.getCause() != null && String.valueOf(error.getCause().getMessage())
+                    .contains("unexpected alert open")) {
                 Alert alert = Selenide.switchTo().alert();
                 alert.accept();
             } else {

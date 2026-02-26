@@ -2,7 +2,6 @@ package elements;
 
 import com.codeborne.selenide.ScrollIntoViewOptions;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebElementCondition;
 import lombok.Getter;
 
 import static com.codeborne.selenide.ScrollIntoViewOptions.Block.center;

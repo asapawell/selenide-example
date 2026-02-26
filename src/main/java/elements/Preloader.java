@@ -19,6 +19,6 @@ public class Preloader extends BaseElement{
 
     @Step("Проверка отсуствия активного прелоадера")
     public void checkPreloader() {
-        new Waiting().softWait(container);
+        new Waiting().waitUntilDisappear(container);
     }
 }

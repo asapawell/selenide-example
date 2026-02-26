@@ -12,7 +12,7 @@ import java.time.Duration;
 public class Waiting {
 
     @Step("Ожидание изменения состояния объекта {se}")
-    public void softWait(SelenideElement se) {
+    public void waitUntilDisappear(SelenideElement se) {
         int loopLimit = 3; /*количество повторных поисков элемента*/
         for (int i = 0; i < loopLimit; i++) {
             try {

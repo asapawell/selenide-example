@@ -1,7 +1,9 @@
 package service;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.extension.*;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -10,6 +12,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 public class EnvAnnotationProcessor implements TestTemplateInvocationContextProvider {
 
@@ -45,16 +49,40 @@ public class EnvAnnotationProcessor implements TestTemplateInvocationContextProv
         }
     }
 
-    private record BrowserLifecycleExtension(Env.Browser browser) implements BeforeEachCallback {
+    private record BrowserLifecycleExtension(Env.Browser browser) implements BeforeEachCallback, AfterEachCallback {
 
         @Override
         public void beforeEach(ExtensionContext context) {
             LocalBrowser.browserSetup();
+            WebDriver driver = createDriver(browser);
+            WebDriverRunner.setWebDriver(driver);
+            try {
+                Selenide.localStorage().clear();
+                Selenide.sessionStorage().clear();
+            } catch (Exception ignored) {
+
+            }
+        }
+
+        private WebDriver createDriver(Env.Browser browser) {
             switch (browser) {
-                case chrome -> WebDriverRunner.setWebDriver(new ChromeDriver(new ChromeOptions()));
-                case firefox -> WebDriverRunner.setWebDriver(new FirefoxDriver(new FirefoxOptions()));
+                case chrome -> {
+                    ChromeOptions options = new ChromeOptions();
+                    options.addArguments("--start-maximized");
+                    return new ChromeDriver(options);
+                }
+                case firefox -> {
+                    FirefoxOptions options = new FirefoxOptions();
+                    options.addArguments("--start-maximized");
+                    return new FirefoxDriver(options);
+                }
                 default -> throw new IllegalStateException("Unknown browser: " + browser);
             }
+        }
+
+        @Override
+        public void afterEach(ExtensionContext context) {
+            closeWebDriver();
         }
     }
 }

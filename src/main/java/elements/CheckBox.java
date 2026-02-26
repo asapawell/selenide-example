@@ -14,7 +14,7 @@ public class CheckBox extends BaseElement {
 
     @Step("Установить чек-бокс '{this.alias}' в состояние 'Установлен'")
     public void setChecked() {
-        if (!Objects.requireNonNull(container.getDomProperty("checked")).contains("true")) {
+        if (!isChecked()) {
             container.click();
             shouldBeSelected();
         }
@@ -22,7 +22,7 @@ public class CheckBox extends BaseElement {
 
     @Step("Установить чек-бокс '{this.alias}' в состояние 'Не установлен'")
     public void setNotChecked() {
-        if (Objects.requireNonNull(container.getDomProperty("checked")).contains("true")) {
+        if (isChecked()) {
             container.click();
             shouldNotBeSelected();
         }
@@ -37,4 +37,9 @@ public class CheckBox extends BaseElement {
     public void shouldNotBeSelected() {
         container.shouldNotHave(Condition.domProperty("checked", "true"));
     }
+
+    private boolean isChecked() {
+        return Boolean.parseBoolean(container.getDomProperty("checked"));
+    }
+
 }
