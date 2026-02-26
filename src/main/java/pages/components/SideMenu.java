@@ -18,7 +18,7 @@ public class SideMenu {
 
     private final SelenideElement header = container.$x(".//div[@class='modal-header']").as("Заголовок");
 
-    private final SelenideElement body = container.$x(".//div[@class='modal-body']").as("Заголовок");
+    private final SelenideElement body = container.$x(".//div[@class='modal-body']").as("Тело модального окна");
 
     private final ElementsCollection items = header.$$x(".//*[contains(@class,'item')]").as("Элементы");
 

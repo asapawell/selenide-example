@@ -46,10 +46,10 @@ public class OsagoPage {
             .as("Модель"));
 
     private final DropDownList productionYear = new DropDownList($x("//*[@formcontrolname='productionYear']")
-            .as("Модель"));
+            .as("Год выпуска"));
 
     private final DropDownList horsePower = new DropDownList($x("//*[@formcontrolname='horsePower']")
-            .as("Модель"));
+            .as("Мощность`"));
 
     private final Input stsNumberControlInput = new Input($x("//*[@formcontrolname='stsNumber']")
             .as("Серия и номер СТС"));
@@ -85,7 +85,6 @@ public class OsagoPage {
         checkTitle();
         iframePreloader.checkPreloader();
         Selenide.switchTo().frame($x("//iframe[@id='angularAppIframe']").as("Блок рассчета"));
-//        preloader.checkPreloader();
         licenseInput.scrollIntoView();
         return this;
     }
@@ -130,7 +129,7 @@ public class OsagoPage {
     }
 
     @Step("Выбрать год '2026' путем разворачивания дропдауна и скрола до нужного значения")
-    public OsagoPage chooseProductionYear(String year) {
+    public OsagoPage chooseLastProductionYearByScrolling(String year) {
         productionYear.scrollToValue(year);
         return this;
     }
@@ -170,14 +169,19 @@ public class OsagoPage {
     }
 
     @Step("Кликнуть кнопку 'Продолжить'")
-    public OsagoPage initContinue() {
+    public OsagoPage clickContinue() {
         continueBtn.scrollIntoView();
         continueBtn.click();
+        checkRequiredFieldErrors();
+
+        return this;
+    }
+
+    @Step("Проверить ошибки валидации обязательных полей")
+    public void checkRequiredFieldErrors() {
         horsePower.checkViolationDdl("Укажите мощность Вашего автомобиля в л.с.");
         stsDateDdl.checkViolationDdl("Укажите корректную дату выдачи СТС документа");
         vinNumberDdl.checkViolationDdl("Заполните VIN номер");
-
-        return this;
     }
 
     @Step("Вызвать боковое меню")

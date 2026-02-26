@@ -3,6 +3,7 @@ package tests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestTemplate;
 import pages.MainPage;
+import pages.OsagoPage;
 import service.Env;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -10,6 +11,7 @@ import static com.codeborne.selenide.Selenide.open;
 public class OsagoTest {
 
     private final MainPage mainPage = new MainPage();
+    private final OsagoPage osagoPage = new OsagoPage();
 
     private final static String LICENSE_NUMBER = "Р444ЕВ44";
     private final static String MARK = "MAZDA";
@@ -23,10 +25,25 @@ public class OsagoTest {
     @DisplayName("Рассчитать стоимость ОСАГО")
     public void calculateOsagoTest() {
         open("/");
+
+        initiateOsagoInsurance();
+
+        fillCarData();
+
+        fillOwnerData();
+
+        verifySideMenu();
+    }
+
+    private void initiateOsagoInsurance() {
         mainPage
                 .chooseAutoCategory()
                 .checkOsagoCard()
-                .scrollToLicenseNumber()
+                .scrollToLicenseNumber();
+    }
+
+    private void fillCarData() {
+        osagoPage
                 .setLicenseNumber(LICENSE_NUMBER)
                 .activateToggle()
                 .checkPlaceHolderEnterLicenseNumber()
@@ -37,10 +54,18 @@ public class OsagoTest {
                 .chooseMark(MARK)
                 .findModelViaPartlySearch(PART_OF_MODEL_NAME, MODEL)
                 .checkHorsePowerShouldBeDisabled()
-                .chooseProductionYear(PROD_YEAR)
+                .chooseLastProductionYearByScrolling(PROD_YEAR);
+    }
+
+    private void fillOwnerData() {
+        osagoPage
                 .choosePurposeUseOf()
                 .inputStsNumberControl(STS)
-                .initContinue()
+                .clickContinue();
+    }
+
+    private void verifySideMenu() {
+        osagoPage
                 .openSideMenu()
                 .checkHeader()
                 .goToDms()
