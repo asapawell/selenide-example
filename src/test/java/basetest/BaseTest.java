@@ -18,7 +18,7 @@ public class BaseTest {
         try {
             Selenide.localStorage().clear();
             Selenide.sessionStorage().clear();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 
         }
         open("/");
