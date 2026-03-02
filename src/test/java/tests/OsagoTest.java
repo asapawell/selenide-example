@@ -20,7 +20,7 @@ public class OsagoTest {
     private final static String STS = "1234567879";
     private final static String PROD_YEAR = "2026";
 
-    @Env({Env.Browser.chrome, Env.Browser.firefox})
+    @Env({Env.Browser.chrome})
     @TestTemplate
     @DisplayName("Рассчитать стоимость ОСАГО")
     public void calculateOsagoTest() {

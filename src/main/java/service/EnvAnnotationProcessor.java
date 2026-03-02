@@ -25,14 +25,14 @@ public class EnvAnnotationProcessor implements TestTemplateInvocationContextProv
 
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-        var env = findEnv(context).orElseThrow();
+        Env env = findEnv(context).orElseThrow();
         return Stream.of(env.value()).map(BrowserInvocationContext::new);
     }
 
     private java.util.Optional<Env> findEnv(ExtensionContext ctx) {
-        var method = ctx.getRequiredTestMethod().getAnnotation(Env.class);
+        Env method = ctx.getRequiredTestMethod().getAnnotation(Env.class);
         if (method != null) return java.util.Optional.of(method);
-        var cls = ctx.getRequiredTestClass().getAnnotation(Env.class);
+        Env cls = ctx.getRequiredTestClass().getAnnotation(Env.class);
         return java.util.Optional.ofNullable(cls);
     }
 

@@ -16,13 +16,4 @@ public class Waiting {
         se.shouldBe(Condition.visible, Duration.ofSeconds(5));
         se.should(Condition.disappear, Duration.ofSeconds(60));
     }
-
-    @Step("Проверка отсутствия активного элемента {se}")
-    public void softWaitWithReturn(SelenideElement se) {
-        try {
-            se.shouldBe(Condition.visible, Duration.ofSeconds(4));
-        } catch (UIAssertionError ignored) {
-        }
-        se.shouldNotBe(Condition.visible, Duration.ofSeconds(60));
-    }
 }
